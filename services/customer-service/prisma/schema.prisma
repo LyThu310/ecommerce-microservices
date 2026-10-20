@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Membership {
+  mid       Int        @id @default(autoincrement())
+  mname     String     @db.VarChar(50)
+  score     Int
+  customers Customer[]
+}
+
+model Customer {
+  uid        Int        @id
+  fullname   String     @db.VarChar(100)
+  mid        Int
+  membership Membership @relation(fields: [mid], references: [mid], onUpdate: Cascade, onDelete: Restrict)
+
+  @@index([mid])
+}
